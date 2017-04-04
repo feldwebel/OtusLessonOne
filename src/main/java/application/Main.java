@@ -16,23 +16,39 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("TEST");
         Main app = new Main();
+
+        Filter gtFilter = (CSVRecord record, String column, int size) ->
+        {
+            return
+                    Integer.parseInt(record.get(column)) > size
+                            ? Integer.parseInt(record.get("price"))
+                            : 0;
+        };
+
         try {
-            app.read();
+            app.read(gtFilter);
         } catch (Exception ex) {
             System.err.println("SOMETHING WRONG");
         }
     }
 
-    public void read() throws IOException, ParseException
+    public void read(Filter filter) throws IOException, ParseException
     {
+        int totalResult = 0;
         int result = 0;
         ClassLoader classLoader = this.getClass().getClassLoader();
         Reader in = new FileReader(classLoader.getResource(FILE_CSV).getFile());
         Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(in);
         for (CSVRecord record : records) {
-            result += Integer.parseInt(record.get("price"));
+            totalResult += Integer.parseInt(record.get("price"));
+            result += filter.check(record, "sq__ft", 1000);
         }
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
-        System.out.println("Totally: " + nf.format(result));
+        System.out.println("Totally: " + nf.format(totalResult));
+        System.out.println("Large: " + nf.format(result));
+    }
+
+    interface Filter {
+        int check(CSVRecord record, String column, int size);
     }
 }
