@@ -13,8 +13,8 @@ public class App {
         App app = new App();
 
         Map<String, Objectivator> dataSet = new HashMap<String, Objectivator>();
-        dataSet.put("App", () -> new App()); //23
-        dataSet.put("String",() -> new String("")); //28
+        dataSet.put("App", () -> new App()); //24
+        dataSet.put("String",() -> new String("Lorem ipsum")); //28
         dataSet.put("ArrayList", () -> new ArrayList());
         dataSet.put("int[3]", () -> new int[3]); //36
         dataSet.put("int[5]", () -> new int[5]); //44
@@ -28,7 +28,6 @@ public class App {
                 System.out.println(ex.getMessage());
             }
         }
-
     }
 
     private void checkIt(Map.Entry<String, Objectivator> item) throws InterruptedException, IllegalAccessException, InstantiationException {
@@ -42,7 +41,7 @@ public class App {
         for (int i = 0; i < size; i++) {
             array[i] = item.getValue().getNewObject();
         }
-        //runGC();
+
         before = this.sizeOf();
 
         array = null;
@@ -51,8 +50,8 @@ public class App {
 
         after = this.sizeOf();
 
-        System.out.println("Memory spent: " + (before - after));
-        System.out.println("divided " + ((before - after) / size));
+        System.out.println("Memory spent total: " + (before - after));
+        System.out.println("Memory spent per one object " + ((before - after) / size));
 
     }
 
