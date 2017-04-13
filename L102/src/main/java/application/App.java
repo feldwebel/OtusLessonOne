@@ -13,9 +13,9 @@ public class App {
         App app = new App();
 
         Map<String, Objectivator> dataSet = new HashMap<String, Objectivator>();
-        dataSet.put("App", () -> new App()); //24
+        dataSet.put("App", () -> new App()); //22
         dataSet.put("String",() -> new String("Lorem ipsum")); //28
-        dataSet.put("ArrayList", () -> new ArrayList());
+        dataSet.put("ArrayList", () -> new ArrayList()); //28
         dataSet.put("int[3]", () -> new int[3]); //36
         dataSet.put("int[5]", () -> new int[5]); //44
         dataSet.put("Date", () -> new Date()); //28
@@ -39,7 +39,7 @@ public class App {
         Object[] array = new Object[size];
 
         for (int i = 0; i < size; i++) {
-            array[i] = item.getValue().getNewObject();
+            array[i] = item.getValue().getObject();
         }
 
         before = this.sizeOf();
@@ -66,8 +66,7 @@ public class App {
         return runtime.totalMemory () - runtime.freeMemory ();
     }
 
-    @FunctionalInterface
     private interface Objectivator{
-        Object getNewObject();
+        Object getObject();
     }
 }
