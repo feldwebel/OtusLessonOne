@@ -1,2 +1,0 @@
-Premain-Class: application.Instrument
-Agent-class: application.Instrument
