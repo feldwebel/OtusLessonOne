@@ -42,10 +42,13 @@ public class MyArrayList<T> implements List<T>, RandomAccess {
         return array;
     }
 
-    public <T1> T1[] toArray(T1[] a) throws NullPointerException, ArrayStoreException {
-        if (a.length == 0) throw new NullPointerException();
-        if (!array.getClass().isAssignableFrom(a.getClass())) throw new ArrayStoreException();
-        return null;
+    public <T1> T1[] toArray(T1[] a) {
+        if (a.length < size) {
+            T1[] a1 = (T1[]) new Object[size];
+            a = a1;
+        }
+        System.arraycopy(array, 0, a, 0, size);
+        return a;
     }
 
     public int indexOf(Object o) {

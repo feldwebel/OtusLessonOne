@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -17,8 +19,11 @@ public class Main {
         System.out.println(list.indexOf("[eq"));
         System.out.println(list.lastIndexOf("[eq"));
 
-        Integer[] arr = new Integer[10];
-        list.toArray(arr);
+
+        System.out.println("-------");
+        String[] arr = new String[1];
+        ;
+        System.out.println(list.toArray(arr).length);
 
         list.remove("muravei");
 
