@@ -4,7 +4,7 @@ import java.util.*;
 
 public class MyArrayList<T> implements List<T>, RandomAccess {
 
-    private static final int DEFAULT_LENGTH = 10;
+    public static final int DEFAULT_LENGTH = 10;
 
     private int size = 0;
     private T[] array;
@@ -28,24 +28,26 @@ public class MyArrayList<T> implements List<T>, RandomAccess {
     }
 
     public boolean contains(Object o) {
-        for (int i = 0; i < size; i++) {
-            if (array[i].equals(o)) return true;
-        }
-        return false;
+        return indexOf(o) >= 0;
     }
 
     public Iterator<T> iterator() {
-        return null;
+        T[] copy = Arrays.copyOf(array, size);
+
+        return Arrays.asList(copy).iterator();
     }
 
     public Object[] toArray() {
         return array;
     }
 
-    public <T1> T1[] toArray(T1[] a) throws NullPointerException, ArrayStoreException {
-        if (a.length == 0) throw new NullPointerException();
-        if (!array.getClass().isAssignableFrom(a.getClass())) throw new ArrayStoreException();
-        return null;
+    public <T1> T1[] toArray(T1[] a) {
+        if (a.length < size) {
+            T1[] a1 = (T1[]) new Object[size];
+            a = a1;
+        }
+        System.arraycopy(array, 0, a, 0, size);
+        return a;
     }
 
     public int indexOf(Object o) {
@@ -146,7 +148,12 @@ public class MyArrayList<T> implements List<T>, RandomAccess {
     }
 
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (Object element: c) {
+            if (!contains(element)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean retainAll(Collection<?> c) {
@@ -165,15 +172,24 @@ public class MyArrayList<T> implements List<T>, RandomAccess {
     }
 
     public ListIterator<T> listIterator() {
-        return null;
+        T[] copy = Arrays.copyOf(array, size);
+
+        return Arrays.asList(copy).listIterator();
     }
 
     public ListIterator<T> listIterator(int index) {
-        return null;
+        T[] copy = Arrays.copyOf(array, size);
+
+        return Arrays.asList(copy).listIterator(index);
     }
 
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        checkIndex(fromIndex);
+        checkIndex(toIndex);
+        if (fromIndex > toIndex) throw new IndexOutOfBoundsException();
+
+        T[] copy = Arrays.copyOfRange(array, fromIndex, toIndex);
+        return Arrays.asList(copy);
     }
 
     private void checkIndex(int index) throws IndexOutOfBoundsException {
