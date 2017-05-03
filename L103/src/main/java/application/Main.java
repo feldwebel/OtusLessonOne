@@ -18,6 +18,8 @@ public class Main {
         System.out.println(list.lastIndexOf("[eq"));
 
         Integer[] arr = new Integer[10];
+        String[] str = new String[10];
+        System.out.println(arr.getClass().isAssignableFrom(arr.getClass()));
         list.toArray(arr);
 
         list.remove("muravei");
