@@ -196,10 +196,18 @@ public class MyArrayList<T> implements List<T>, RandomAccess {
 
     private void increase()
     {
-        int incLength = array.length / 2 * 3 + 1;
-        T[] incArray = (T[]) new Object[incLength];
+        T[] incArray = (T[]) new Object[getIncreasedLength()];
         System.arraycopy(array, 0, incArray, 0, array.length);
         array = incArray;
+    }
+
+    /**
+     * Get new array length value, x1,5 + 1 of old one
+     * @return int
+     */
+    private int getIncreasedLength()
+    {
+        return array.length / 2 * 3 + 1;
     }
 
     private class MyIterator implements ListIterator<T>{
