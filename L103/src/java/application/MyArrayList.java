@@ -172,15 +172,13 @@ public class MyArrayList<T> implements List<T>, RandomAccess {
     }
 
     public ListIterator<T> listIterator() {
-        T[] copy = Arrays.copyOf(array, size);
-
-        return Arrays.asList(copy).listIterator();
+        return new MyIterator();
     }
 
     public ListIterator<T> listIterator(int index) {
-        T[] copy = Arrays.copyOf(array, size);
+        checkIndex(index);
 
-        return Arrays.asList(copy).listIterator(index);
+        return new MyIterator(index);
     }
 
     public List<T> subList(int fromIndex, int toIndex) {
@@ -202,5 +200,106 @@ public class MyArrayList<T> implements List<T>, RandomAccess {
         T[] incArray = (T[]) new Object[incLength];
         System.arraycopy(array, 0, incArray, 0, array.length);
         array = incArray;
+    }
+
+    private class MyIterator implements ListIterator<T>{
+        int index = 0;
+        int prev = -1;
+
+        MyIterator(){}
+
+        MyIterator(int index)
+        {
+            this.index = index;
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return index < size;
+        }
+
+        @Override
+        public T next()
+        {
+            if (hasNext()) {
+                T item = array[index];
+                prev = index;
+                index++;
+                return item;
+            }
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public boolean hasPrevious()
+        {
+            return index > 0;
+        }
+
+        @Override
+        public T previous()
+        {
+            if (hasPrevious()) {
+                T item = array[index];
+                prev = index;
+                index--;
+                return item;
+            }
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public int nextIndex()
+        {
+            if (hasNext()) {
+                return index + 1;
+            }
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public int previousIndex()
+        {
+            if (hasPrevious()) {
+                return index - 1;
+            }
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public void remove()
+        {
+            checkPrev();
+
+            MyArrayList.this.remove(index);
+            index = prev;
+            prev = -1;
+        }
+
+        @Override
+        public void set(T t)
+        {
+            checkPrev();
+
+            MyArrayList.this.set(prev, t);
+        }
+
+        @Override
+        public void add(T t)
+        {
+            MyArrayList.this.add(index, t);
+            index++;
+            prev = -1;
+        }
+
+        private boolean checkPrev()
+        {
+            if (prev < 0) {
+                throw new IllegalStateException();
+            }
+
+            return true;
+        }
     }
 }
