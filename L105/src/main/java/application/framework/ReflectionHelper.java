@@ -52,9 +52,7 @@ public class ReflectionHelper {
                 .setUrls(ClasspathHelper.forClassLoader(classLoadersList.toArray(new ClassLoader[0])))
                 .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(testedPackage))));
 
-        Set<Class<? extends Object>> result = reflections.getSubTypesOf(Object.class);
-
-        return result;
+        return reflections.getSubTypesOf(Object.class);
     }
 
     private void populate() {
